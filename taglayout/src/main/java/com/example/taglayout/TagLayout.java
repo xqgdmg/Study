@@ -63,7 +63,7 @@ public class TagLayout extends ViewGroup {
             // 保存每个孩子的矩形框
             childBound.set(lineWidthUsed,heightUsed,lineWidthUsed+child.getMeasuredWidth(),heightUsed + child.getMeasuredHeight());
 
-            // 计算单行宽度
+            // 计算单行已使用宽度
             lineWidthUsed += child.getMeasuredWidth();
             // 计算单行最大高度
             lineMaxHeight = Math.max(lineMaxHeight,child.getMeasuredHeight());
@@ -74,7 +74,7 @@ public class TagLayout extends ViewGroup {
          // 计算父控件测量好的自己的宽高
         int measureWidth = widthUsed;
         int measureHeight = heightUsed + lineMaxHeight;
-         // 保存测量结果
+         // 保存父控件测量结果
         setMeasuredDimension(measureWidth,measureHeight);
     }
 
