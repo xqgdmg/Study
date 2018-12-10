@@ -1,1 +1,1 @@
-include ':app', ':materialedittext', ':taglayout', ':touch'
+include ':app', ':materialedittext', ':taglayout', ':touch', ':scalable'

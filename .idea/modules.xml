@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Study.iml" filepath="$PROJECT_DIR$/Study.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/materialedittext/materialedittext.iml" filepath="$PROJECT_DIR$/materialedittext/materialedittext.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scalable/scalable.iml" filepath="$PROJECT_DIR$/scalable/scalable.iml" />
       <module fileurl="file://$PROJECT_DIR$/taglayout/taglayout.iml" filepath="$PROJECT_DIR$/taglayout/taglayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/touch/touch.iml" filepath="$PROJECT_DIR$/touch/touch.iml" />
     </modules>
