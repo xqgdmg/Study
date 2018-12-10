@@ -38,7 +38,7 @@ public class ScalableImageView extends View{
 
     GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new MyOnGestureListener();
     GestureDetectorCompat gestureDetector;
-    OverScroller scroller;
+    OverScroller scroller; // 这里用 Scroller 会有问题，惯性滑动几乎没有效果
 
 
     public ScalableImageView(Context context, @Nullable AttributeSet attrs) {
@@ -96,7 +96,7 @@ public class ScalableImageView extends View{
         super.onDraw(canvas);
          // 手指移动图片
 //        canvas.translate(offsetX,offsetY);// 这样写会造成放大后在缩小的时候，原来小图的位置也跟着变
-         // 修正放大后移动在缩小后 位置偏移的问题
+         // todo 修正放大后移动在缩小后 位置偏移的问题
         float scaleFraction = (currentScale - smallScale) / (bigScale - smallScale); // 由缩放的比例计算位移的比例
         canvas.translate(offsetX * scaleFraction, offsetY * scaleFraction);
          // 双击放大图片
@@ -138,7 +138,7 @@ public class ScalableImageView extends View{
             if (isBig){
                 offsetX = offsetX - distanceX;
                 offsetY = offsetY - distanceY;
-                fixOffsets();
+                fixOffsets(); // 边界判定
                 invalidate();
             }
 
@@ -154,7 +154,7 @@ public class ScalableImageView extends View{
         @Override
         public boolean onFling(MotionEvent down, MotionEvent move, float velocityX, float velocityY) {
             if (isBig){
-                 // 填参数
+                 // 填参数，只是填参数，没有计算就没有效果
                 scroller.fling((int)offsetX,(int)offsetY,(int)velocityX,(int)velocityY,
                         // 边界物理模型
                         (int)-(bitmap.getWidth() * bigScale - getWidth()) / 2,
@@ -165,6 +165,7 @@ public class ScalableImageView extends View{
 
                  // 计算
                 // 这个方法要api 16才有效，老版本用post
+                 // 两者的区别就是，post()会将runnable对象放在队列中等待执行。 postOnAnimation()方法会在下一帧立即执行runnable对象
                 postOnAnimation(new Runnable() {
                     @Override
                     public void run() {
