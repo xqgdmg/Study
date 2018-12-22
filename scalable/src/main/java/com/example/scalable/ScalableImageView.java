@@ -7,17 +7,20 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.view.ScaleGestureDetectorCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.OverScroller;
 
 /**
  * Created by Chris on 2018/12/10.
+ *
  */
-public class ScalableImageView extends View{
+public class ScalableImageView extends View {
 
     private static final float IMAGE_WIDTH = Utils.dpToPixel(300);
     private static final float OVER_SCALE_FACTOR = 2.0f;
@@ -39,21 +42,22 @@ public class ScalableImageView extends View{
     GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new MyOnGestureListener();
     GestureDetectorCompat gestureDetector;
     OverScroller scroller; // 这里用 Scroller 会有问题，惯性滑动几乎没有效果
+    private final ScaleGestureDetector scaleGestureDetector;
 
 
     public ScalableImageView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         bitmap = Utils.getAvatar(getResources(), (int) IMAGE_WIDTH);
 
-         // 第二个参数可以传 SimpleOnGestureListener，少实现几个没有用的方法。SimpleOnGestureListener 实现了
-         // SimpleOnGestureListener implements OnGestureListener, OnDoubleTapListener
-         // 这个构造方法有这个方法：
+        // 第二个参数可以传 SimpleOnGestureListener，少实现几个没有用的方法。SimpleOnGestureListener 实现了
+        // SimpleOnGestureListener implements OnGestureListener, OnDoubleTapListener
+        // 这个构造方法有这个方法：
         // if (listener instanceof OnDoubleTapListener) {
         //    setOnDoubleTapListener((OnDoubleTapListener) listener);
         // }
         gestureDetector = new GestureDetectorCompat(context, simpleOnGestureListener);
 
-         // 这个就不用设置
+        // 这个就不用设置
         /*gestureDetector.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
@@ -71,22 +75,25 @@ public class ScalableImageView extends View{
             }
         });*/
 
+        // 惯性滑动 
         scroller = new OverScroller(context);
+        // 双指放大缩小
+        scaleGestureDetector = new ScaleGestureDetector(context,new MyOnScaleGestrueListener());
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        originalOffsetX = (getWidth()-bitmap.getWidth())/2f;
-        originalOffsetY = (getHeight()-bitmap.getHeight())/2f;
+        originalOffsetX = (getWidth() - bitmap.getWidth()) / 2f;
+        originalOffsetY = (getHeight() - bitmap.getHeight()) / 2f;
 
-        if (bitmap.getWidth()/bitmap.getHeight() > getWidth()/getHeight()){ // 图片在控件中，宽大于高，所以纵向是大的
-            bigScale = (float)getHeight()/bitmap.getHeight() * OVER_SCALE_FACTOR;
-            smallScale = (float)getWidth()/bitmap.getWidth();
-        }else {
-            smallScale = (float)getHeight()/bitmap.getHeight();
-            bigScale = (float)getWidth()/bitmap.getWidth() * OVER_SCALE_FACTOR;
+        if (bitmap.getWidth() / bitmap.getHeight() > getWidth() / getHeight()) { // 图片在控件中，宽大于高，所以纵向是大的
+            bigScale = (float) getHeight() / bitmap.getHeight() * OVER_SCALE_FACTOR;
+            smallScale = (float) getWidth() / bitmap.getWidth();
+        } else {
+            smallScale = (float) getHeight() / bitmap.getHeight();
+            bigScale = (float) getWidth() / bitmap.getWidth() * OVER_SCALE_FACTOR;
         }
         currentScale = smallScale;
     }
@@ -94,23 +101,38 @@ public class ScalableImageView extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-         // 手指移动图片
+        // 手指移动图片
 //        canvas.translate(offsetX,offsetY);// 这样写会造成放大后在缩小的时候，原来小图的位置也跟着变
-         // todo 修正放大后移动在缩小后 位置偏移的问题
+        // todo 修正放大后移动在缩小后 位置偏移的问题
         float scaleFraction = (currentScale - smallScale) / (bigScale - smallScale); // 由缩放的比例计算位移的比例
         canvas.translate(offsetX * scaleFraction, offsetY * scaleFraction);
-         // 双击放大图片
-        canvas.scale(currentScale,currentScale, getWidth() / 2f, getHeight() / 2f); // 注意要传后面的两个缩放中心的参数
-        canvas.drawBitmap(bitmap,originalOffsetX,originalOffsetY,paint);
+        // 双击放大图片
+        canvas.scale(currentScale, currentScale, getWidth() / 2f, getHeight() / 2f); // 注意要传后面的两个缩放中心的参数
+        canvas.drawBitmap(bitmap, originalOffsetX, originalOffsetY, paint);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 //        return super.onTouchEvent(event);
-        return gestureDetector.onTouchEvent(event);
+
+        // 这种方式是不行的，永远不会走到缩放动画里面
+//        if (!scaleGestureDetector.isInProgress()){// 如果缩放动画在进行中
+//            return gestureDetector.onTouchEvent(event);
+//        }
+//        return scaleGestureDetector.onTouchEvent(event);
+
+        // 只能使用这种方式
+        boolean result = scaleGestureDetector.onTouchEvent(event);// 先让手指缩放的手势执行一次，isInProgress方法才能获取到正确的值
+        if (!scaleGestureDetector.isInProgress()) {
+            result = gestureDetector.onTouchEvent(event);
+        }
+
+        return result;
     }
 
-
+    /*
+     * 手势监听
+     */
     class MyOnGestureListener extends GestureDetector.SimpleOnGestureListener {
 
         @Override
@@ -123,19 +145,19 @@ public class ScalableImageView extends View{
 
         }
 
-         // 单击抬起，不会判断双击，双击也会触发
+        // 单击抬起，不会判断双击，双击也会触发
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             return false;
         }
 
-         // 移动 distanceX ,distanceY 的值正负号和坐标系相反
+        // 移动 distanceX ,distanceY 的值正负号和坐标系相同
         @Override
         public boolean onScroll(MotionEvent down, MotionEvent event, float distanceX, float distanceY) {
-            Log.e("chris","distanceX==" + distanceX);
-            Log.e("chris","distanceY==" + distanceY);
-             // 计算位移
-            if (isBig){
+            Log.e("chris", "distanceX==" + distanceX);
+            Log.e("chris", "distanceY==" + distanceY);
+            // 计算位移
+            if (isBig) {
                 offsetX = offsetX - distanceX;
                 offsetY = offsetY - distanceY;
                 fixOffsets(); // 边界判定
@@ -150,27 +172,27 @@ public class ScalableImageView extends View{
 
         }
 
-         // 惯性滑动
+        // 惯性滑动
         @Override
         public boolean onFling(MotionEvent down, MotionEvent move, float velocityX, float velocityY) {
-            if (isBig){
-                 // 填参数，只是填参数，没有计算就没有效果
-                scroller.fling((int)offsetX,(int)offsetY,(int)velocityX,(int)velocityY,
+            if (isBig) {
+                // 填参数，只是填参数，没有计算就没有效果
+                scroller.fling((int) offsetX, (int) offsetY, (int) velocityX, (int) velocityY,
                         // 边界物理模型
-                        (int)-(bitmap.getWidth() * bigScale - getWidth()) / 2,
-                        (int)(bitmap.getWidth() * bigScale - getWidth()) / 2,
-                        (int)-(bitmap.getHeight() * bigScale - getHeight()) / 2,
-                        (int)(bitmap.getHeight() * bigScale - getHeight()) / 2
+                        (int) -(bitmap.getWidth() * bigScale - getWidth()) / 2,
+                        (int) (bitmap.getWidth() * bigScale - getWidth()) / 2,
+                        (int) -(bitmap.getHeight() * bigScale - getHeight()) / 2,
+                        (int) (bitmap.getHeight() * bigScale - getHeight()) / 2
                 );
 
-                 // 计算
+                // 计算
                 // 这个方法要api 16才有效，老版本用post
-                 // 两者的区别就是，post()会将runnable对象放在队列中等待执行。 postOnAnimation()方法会在下一帧立即执行runnable对象
+                // 两者的区别就是，post()会将runnable对象放在队列中等待执行。 postOnAnimation()方法会在下一帧立即执行runnable对象
                 postOnAnimation(new Runnable() {
                     @Override
                     public void run() {
                         boolean computeResult = scroller.computeScrollOffset();//计算
-                        if (computeResult){ // computeResult== true 表示动画未完成
+                        if (computeResult) { // computeResult== true 表示动画未完成
                             // 赋值
                             offsetX = scroller.getCurrX();
                             offsetY = scroller.getCurrY();
@@ -186,31 +208,42 @@ public class ScalableImageView extends View{
             return false;
         }
 
-         // 单击确认（设置了双击用这个）
+        // 单击确认（设置了双击用这个）
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             return super.onSingleTapConfirmed(e);
 
         }
 
-         // 双击 300ms，手抖两次间隔小于40ms，不会响应
-         // 只响应 down
+        // 双击 300ms，手抖两次间隔小于40ms，不会响应
+        // 只响应 down
         @Override
         public boolean onDoubleTap(MotionEvent e) {
+//            isBig = !isBig;
+//            if (isBig) {
+//                getScaleAnimator().start();
+//            } else {
+//                getScaleAnimator().reverse();
+//            }
+//            return super.onDoubleTap(e);
+
             isBig = !isBig;
-//            invalidate();
-            if (isBig){
+            if (isBig) {
+                // 双击眼睛之后，方法手眼睛应该还在手指上的位置。
+                offsetX = (e.getX() - getWidth() / 2f) - (e.getX() - getWidth() / 2) * bigScale / smallScale;
+                offsetY = (e.getY() - getHeight() / 2f) - (e.getY() - getHeight() / 2) * bigScale / smallScale;
+                fixOffsets();
+
                 getScaleAnimator().start();
-            }else{
+            } else {
                 getScaleAnimator().reverse();
             }
-            return super.onDoubleTap(e);
+            return false;
         }
 
 
-
-         // 双击，早期谷歌地图调地图角度，现在地图是多点触控的
-         // 响应 down, move, and up
+        // 双击，早期谷歌地图调地图角度，现在地图是多点触控的
+        // 响应 down, move, and up
         @Override
         public boolean onDoubleTapEvent(MotionEvent e) {
             return super.onDoubleTapEvent(e);
@@ -219,15 +252,15 @@ public class ScalableImageView extends View{
 
     /*
      * 限制手指移动的时候，图片可以移动的边界
-     * 注意最小最大值的正负号
      */
     private void fixOffsets() {
-         // 正向取最小值
-       offsetX = Math.min(offsetX,(bitmap.getWidth()* bigScale - getWidth())/2);
-        // 反向取最大值
-       offsetX = Math.max(offsetX,-(bitmap.getWidth()* bigScale - getWidth())/2);
-       offsetY = Math.min(offsetY,(bitmap.getHeight()* bigScale - getHeight())/2);
-       offsetY = Math.max(offsetY,-(bitmap.getHeight()* bigScale - getHeight())/2);
+        Log.e("chris","offsetX==" + offsetX);
+        // 正向（右下）取最小值 相当于 + 很大的正数，不能无限大，所以取最小值
+        offsetX = Math.min(offsetX, (bitmap.getWidth() * bigScale - getWidth()) / 2);
+        offsetY = Math.min(offsetY, (bitmap.getHeight() * bigScale - getHeight()) / 2);
+        // 反向（左上）取最大值
+        offsetX = Math.max(offsetX, -(bitmap.getWidth() * bigScale - getWidth()) / 2);
+        offsetY = Math.max(offsetY, -(bitmap.getHeight() * bigScale - getHeight()) / 2);
 
     }
 
@@ -235,8 +268,8 @@ public class ScalableImageView extends View{
      * 获取动画
      */
     private ObjectAnimator getScaleAnimator() {
-        if (scaleAnimator == null){
-            scaleAnimator = ObjectAnimator.ofFloat(this,"currentScale",smallScale,bigScale);
+        if (scaleAnimator == null) {
+            scaleAnimator = ObjectAnimator.ofFloat(this, "currentScale", smallScale, bigScale);
         }
         return scaleAnimator;
     }
@@ -248,5 +281,37 @@ public class ScalableImageView extends View{
     public void setCurrentScale(float currentScale) {
         this.currentScale = currentScale;
         invalidate();
+    }
+
+    /*
+     * 双指缩放的手势监听
+     */
+    private class MyOnScaleGestrueListener implements ScaleGestureDetector.OnScaleGestureListener {
+        
+        float initialScale;// 每次缩放的起始值
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+            initialScale = currentScale;// 记录每次缩放的起始值
+            return true;// 这里返回true 就可以了
+        }
+
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            currentScale = initialScale * detector.getScaleFactor();// 当前应该放大的值 = 起始值 * 方法系数
+            // 如果放大到 bigScale ，开启单指滑动。避免一上来就双指放大，isBig这个值不会更新，导致放大了也没有办法单指滑动了
+            if (currentScale >= bigScale){
+                isBig = true;
+            }else{
+                isBig = false;
+            }
+            invalidate();
+            return false;//
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector detector) {
+
+        }
     }
 }
