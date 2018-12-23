@@ -103,7 +103,7 @@ public class ScalableImageView extends View {
         super.onDraw(canvas);
         // 手指移动图片
 //        canvas.translate(offsetX,offsetY);// 这样写会造成放大后在缩小的时候，原来小图的位置也跟着变
-        // todo 修正放大后移动在缩小后 位置偏移的问题
+        // 修正放大后移动在缩小后 位置偏移的问题
         float scaleFraction = (currentScale - smallScale) / (bigScale - smallScale); // 由缩放的比例计算位移的比例
         canvas.translate(offsetX * scaleFraction, offsetY * scaleFraction);
         // 双击放大图片
