@@ -20,10 +20,10 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+//import retrofit2.Call;
+//import retrofit2.Callback;
+//import retrofit2.Response;
+//import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 //        set.playSequentially(animator1,animator2,animator3);
 //        set.start();
 
-        // FlipView打开2 快速一起播放
+//        // FlipView打开2 快速一起播放
 //        FlipView flipView = (FlipView) findViewById(R.id.flipView);
 //        PropertyValuesHolder bottomFlip = PropertyValuesHolder.ofFloat("bottomFlip", 45);
 //        PropertyValuesHolder flipRotation = PropertyValuesHolder.ofFloat("flipRotation", 270);
@@ -87,35 +87,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void retrofitCode() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
-
-        GitHubService service = retrofit.create(GitHubService.class);
-        Single<List<Repo>> repos = service.listRepos("xqgdmg");
-
-        repos.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Repo>>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.e("chris", "onCompleted");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("chris", "onError");
-                    }
-
-                    @Override
-                    public void onNext(List<Repo> repos) {
-                        Log.e("chris", "onNext");
-                        Log.e("chris", "repos==" + repos.toString());
-                    }
-                });
-
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("https://api.github.com/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                .build();
+//
+//        GitHubService service = retrofit.create(GitHubService.class);
+//        Single<List<Repo>> repos = service.listRepos("xqgdmg");
+//
+//        repos.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<List<Repo>>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        Log.e("chris", "onCompleted");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Log.e("chris", "onError");
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<Repo> repos) {
+//                        Log.e("chris", "onNext");
+//                        Log.e("chris", "repos==" + repos.toString());
+//                    }
+//                });
+//
 //        repos.enqueue(new Callback<List<Repo>>() {
 //            @Override
 //            public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
