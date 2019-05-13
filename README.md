@@ -40,9 +40,8 @@
 <br/><br/>
 
 ## Retrofit及OkHttp源码
-######
-<img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/da.PNG" width="200" alt="图片描述文字"/>
-<br/><br/>
+###### 只有依赖库和很简单的基本api
+
 
 
 
