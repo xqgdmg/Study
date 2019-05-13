@@ -9,7 +9,7 @@
 <br/><br/>
 
 ## FlipView
-<img src="https://github.com/xqgdmg/Study/blob/master/img/a.PNG" width="200" alt="图片描述文字"/>
+<img src="https://github.com/xqgdmg/Study/blob/master/img/flip.git" alt="图片描述文字"/>
 <br/><br/>
 
 ## AvatarView
