@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
 //        ImageView imageView1 = (ImageView) findViewById(R.id.iv1);
 //        ImageView imageView2 = (ImageView) findViewById(R.id.iv2);
 
-
+//        // FlipView打开1，慢速分别播放
+//        FlipView flipView = (FlipView) findViewById(R.id.flipView);
 //        ObjectAnimator animator1 = ObjectAnimator.ofFloat(flipView,"bottomFlip",45);
 //        animator1.setDuration(8000);
 //
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 //        set.playSequentially(animator1,animator2,animator3);
 //        set.start();
 
+        // FlipView打开2 快速一起播放
+//        FlipView flipView = (FlipView) findViewById(R.id.flipView);
 //        PropertyValuesHolder bottomFlip = PropertyValuesHolder.ofFloat("bottomFlip", 45);
 //        PropertyValuesHolder flipRotation = PropertyValuesHolder.ofFloat("flipRotation", 270);
 //        PropertyValuesHolder topFlip = PropertyValuesHolder.ofFloat("topFlip", -45);

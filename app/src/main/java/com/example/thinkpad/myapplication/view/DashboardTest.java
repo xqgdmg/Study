@@ -15,6 +15,7 @@ import com.example.thinkpad.myapplication.Utils;
 
 /**
  * Created by Chris on 2018/11/29.
+ * 仪表盘
  */
 public class DashboardTest extends View{
 

@@ -14,6 +14,7 @@ import com.example.thinkpad.myapplication.Utils;
 
 /**
  * Created by Chris on 2018/12/5.
+ * 折叠
  */
 public class FlipView extends View {
 
@@ -31,8 +32,6 @@ public class FlipView extends View {
     public FlipView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
-
-
 
     {
         camera.setLocation(0,0,Utils.getZForCamera());

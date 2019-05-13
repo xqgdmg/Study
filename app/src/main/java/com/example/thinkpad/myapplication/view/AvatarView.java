@@ -18,6 +18,7 @@ import com.example.thinkpad.myapplication.Utils;
 
 /**
  * Created by Chris on 2018/11/30.
+ * 圆形头像
  */
 public class AvatarView extends View{
 
