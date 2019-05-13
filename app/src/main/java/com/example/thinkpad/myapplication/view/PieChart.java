@@ -13,6 +13,7 @@ import com.example.thinkpad.myapplication.Utils;
 
 /**
  * Created by Chris on 2018/11/30.
+ * 饼状图
  */
 public class PieChart extends View{
 

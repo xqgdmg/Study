@@ -11,11 +11,11 @@
 <br/><br/>
 
 ## FlipView
-###### 慢速分别播放三个动画效果：
+###### AnimatorSet慢速分别播放三个动画效果：
 <img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/flip.gif" alt="图片描述文字"/>
 <br/>
 
-###### 慢速同时播放三个动画效果：
+###### PropertyValuesHolder慢速分别播放三个动画效果：
 <img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/flip2.gif" alt="图片描述文字"/>
 <br/><br/>
 
@@ -24,19 +24,23 @@
 <img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/ca.PNG" width="200" alt="图片描述文字"/>
 <br/><br/>
 
-## AvatarView
-<img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/da.PNG" width="200" alt="图片描述文字"/>
+## PieChart
+###### 饼状图 canvas.translate()拉出一块
+<img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/pie.PNG" width="200" alt="图片描述文字"/>
 <br/><br/>
 
-## AvatarView
-<img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/da.PNG" width="200" alt="图片描述文字"/>
+## ProvinceView
+###### TypeEvaluator
+<img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/pro.gif" width="320" width="480" alt="图片描述文字"/>
 <br/><br/>
 
-## AvatarView
-<img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/da.PNG" width="200" alt="图片描述文字"/>
+## SportsView
+###### 环drawCircle；进度条drawArc
+<img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/sp.PNG" width="200" alt="图片描述文字"/>
 <br/><br/>
 
-## AvatarView
+## Retrofit及OkHttp源码
+######
 <img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/da.PNG" width="200" alt="图片描述文字"/>
 <br/><br/>
 

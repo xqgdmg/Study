@@ -12,6 +12,7 @@ import com.example.thinkpad.myapplication.Utils;
 
 /**
  * Created by Chris on 2018/12/5.
+ * 类似抽奖地显示省份的名称
  */
 public class ProvinceView extends View{
 
