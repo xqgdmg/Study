@@ -5,7 +5,7 @@
 <br/><br/>
 
 ## DashboardTest
-<img src="https://github.com/xqgdmg/Study/blob/master/img/da.PNG" width="320" height="320" alt="图片描述文字"/>
+<img src="https://github.com/xqgdmg/Study/blob/master/img/da.PNG" width="320" alt="图片描述文字"/>
 <br/><br/>
 
 ## FlipView
