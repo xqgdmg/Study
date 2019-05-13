@@ -43,13 +43,27 @@
 ###### 只有依赖和及其简单的api
 
 
-# materialedittext <br/><br/>
+# 2：materialedittext <br/><br/>
 
-## 2：MaterialEdittext
+## MaterialEdittext
 ###### 圆形头像加边框
 <img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/MaterialEdittext.gif" width="320" width="480" alt="图片描述文字"/>
 <br/><br/>
 
 
+# 3：scalable <br/><br/>
+###### 双击放大缩小，双指放大缩小的图片
+<img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/da.PNG" width="320" width="480" alt="图片描述文字"/>
+<br/><br/>
 
 
+# 4：taglayout <br/><br/>
+###### 简陋标签布局
+<img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/da.PNG" width="320" width="480" alt="图片描述文字"/>
+<br/><br/>
+
+
+# 5：touch <br/><br/>
+###### 触摸反馈
+<img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/da.PNG" width="320" width="480" alt="图片描述文字"/>
+<br/><br/>
