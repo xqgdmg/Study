@@ -40,52 +40,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("https://api.github.com/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-//                .build();
-//
-//        GitHubService service = retrofit.create(GitHubService.class);
-//        Single<List<Repo>> repos = service.listRepos("xqgdmg");
-//
-//        repos.subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<List<Repo>>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        Log.e("chris","onCompleted");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Log.e("chris","onError");
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<Repo> repos) {
-//                        Log.e("chris","onNext");
-//                        Log.e("chris","repos==" + repos.toString());
-//                    }
-//                });
-
-//        repos.enqueue(new Callback<List<Repo>>() {
-//            @Override
-//            public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
-//                Log.e("chris","Success!!");
-//                Log.e("chris","call==" + call.toString());
-//                Log.e("chris","response==" + response.toString());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Repo>> call, Throwable t) {
-//                Log.e("chris","Fail!!");
-//            }
-//        });
+        // Retrofit 源码分析
+//        retrofitCode();
 
 //        ImageView imageView1 = (ImageView) findViewById(R.id.iv1);
 //        ImageView imageView2 = (ImageView) findViewById(R.id.iv2);
-        ProvinceView flipView = (ProvinceView) findViewById(R.id.flipView);
+
 
 //        ObjectAnimator animator1 = ObjectAnimator.ofFloat(flipView,"bottomFlip",45);
 //        animator1.setDuration(8000);
@@ -114,21 +74,69 @@ public class MainActivity extends AppCompatActivity {
 //        imageView1.setImageBitmap(avatar1);
 //        imageView2.setImageBitmap(avatar2);
 
-        ObjectAnimator animator = ObjectAnimator.ofObject(flipView, "province", new ProvinceTypeEvaluator(), "澳门特别行政区");
-        animator.setStartDelay(3000);
-        animator.setDuration(8000);
-        animator.start();
+
+        // ProvinceView打开
+//        ProvinceView flipView = (ProvinceView) findViewById(R.id.flipView);
+//        ObjectAnimator animator = ObjectAnimator.ofObject(flipView, "province", new ProvinceTypeEvaluator(), "澳门特别行政区");
+//        animator.setStartDelay(3000);
+//        animator.setDuration(8000);
+//        animator.start();
+    }
+
+    private void retrofitCode() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.github.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        GitHubService service = retrofit.create(GitHubService.class);
+        Single<List<Repo>> repos = service.listRepos("xqgdmg");
+
+        repos.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Repo>>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.e("chris", "onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("chris", "onError");
+                    }
+
+                    @Override
+                    public void onNext(List<Repo> repos) {
+                        Log.e("chris", "onNext");
+                        Log.e("chris", "repos==" + repos.toString());
+                    }
+                });
+
+//        repos.enqueue(new Callback<List<Repo>>() {
+//            @Override
+//            public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
+//                Log.e("chris", "Success!!");
+//                Log.e("chris", "call==" + call.toString());
+//                Log.e("chris", "response==" + response.toString());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Repo>> call, Throwable t) {
+//                Log.e("chris", "Fail!!");
+//            }
+//        });
     }
 
     class ProvinceTypeEvaluator implements TypeEvaluator<String> {
 
         @Override
         public String evaluate(float fraction, String startValue, String endValue) {
-            Log.e("chris","startValue==" + startValue);
-            Log.e("chris","endValue==" + endValue);
+            Log.e("chris", "startValue==" + startValue);
+            Log.e("chris", "endValue==" + endValue);
             int startIndex = ProvinceUtil.provinces.indexOf(startValue);
             int endIndex = ProvinceUtil.provinces.indexOf(endValue);
-            int index = (int) (startIndex + (endIndex - startIndex)*fraction);
+            int index = (int) (startIndex + (endIndex - startIndex) * fraction);
             return ProvinceUtil.provinces.get(index);
         }
     }
