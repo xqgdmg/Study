@@ -1,4 +1,4 @@
-# Study 练习项目 <br/><br/>
+# app <br/><br/>
 
 ## AvatarView
 ###### 圆形头像加边框
@@ -40,7 +40,16 @@
 <br/><br/>
 
 ## Retrofit及OkHttp源码
-###### 只有依赖库和很简单的基本api
+######
+<img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/da.PNG" width="200" alt="图片描述文字"/>
+<br/><br/>
+
+# materialedittext <br/><br/>
+
+## MaterialEdittext
+###### 圆形头像加边框
+<img src="https://raw.githubusercontent.com/xqgdmg/Study/master/img/MaterialEdittext.gif" width="320" width="480" alt="图片描述文字"/>
+<br/><br/>
 
 
 
